@@ -80,3 +80,5 @@ chmod +x config_data_retention.sh
 ./config_data_retention.sh
 chmod +x config_auditd_file_access.sh
 ./config_auditd_file_access.sh
+chmod +x user_acc_and_env.sh
+./user_acc_and_env.sh
