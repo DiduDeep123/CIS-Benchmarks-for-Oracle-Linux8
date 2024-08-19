@@ -84,3 +84,5 @@ chmod +x user_acc_and_env.sh
 ./user_acc_and_env.sh
 chmod +x config_integrity_checking.sh
 ./config_integrity_checking.sh
+chmod +x world_writable_files_dir_are_secured.sh
+./world_writable_files_dir_are_secured.sh
