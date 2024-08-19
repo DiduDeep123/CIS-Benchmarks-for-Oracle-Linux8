@@ -42,8 +42,7 @@ log_message "Checking if core dump storage is disabled..."
 **\n"
  fi
  }
- while IFS="=" read -r l_systemd_parameter_name l_systemd_parameter_value; do # Assess and 
-check parameters
+ while IFS="=" read -r l_systemd_parameter_name l_systemd_parameter_value; do # Assess and check parameters
  l_systemd_parameter_name="${l_systemd_parameter_name// /}"
  l_systemd_parameter_value="${l_systemd_parameter_value// /}"
  config_file_parameter_chk
