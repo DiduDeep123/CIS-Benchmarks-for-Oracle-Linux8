@@ -82,3 +82,5 @@ chmod +x config_auditd_file_access.sh
 ./config_auditd_file_access.sh
 chmod +x user_acc_and_env.sh
 ./user_acc_and_env.sh
+chmod +x config_integrity_checking.sh
+./config_integrity_checking.sh
