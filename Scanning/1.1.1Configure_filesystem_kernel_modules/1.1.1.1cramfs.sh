@@ -63,12 +63,12 @@ log_message() {
  if [ -z "$l_output2" ]; then
  echo -e "\n- Audit Result:\n ** PASS **\n$l_output\n"
  echo "CRAMFS CHECK:SUCCESS" >> $RESULT_FILE
- log_message "cramfs kernel module scan: pass."
+ log_message "cramfs kernel module scan: PASS."
  else
  echo -e "\n- Audit Result:\n ** FAIL **\n - Reason(s) for audit failure:\n$l_output2\n"
  [ -n "$l_output" ] && echo -e "\n- Correctly set:\n$l_output\n"
  echo "CRAMFS CHECK:FAILED" >> $RESULT_FILE
- log_message "cramfs kernel module scan: failed."
+ log_message "cramfs kernel module scan: FAILED."
  fi
 
 
