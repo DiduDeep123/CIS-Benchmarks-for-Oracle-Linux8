@@ -70,4 +70,6 @@ chmod +x config_PAM_authselect.sh
 ./config_PAM_authselect.sh
 chmod +x config_rsyslog.sh
 ./config_rsyslog.sh
+chmod +x config_auditing.sh
+./config_auditing.sh
 
