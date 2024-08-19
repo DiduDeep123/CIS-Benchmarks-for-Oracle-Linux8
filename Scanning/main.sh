@@ -8,3 +8,5 @@ chmod +x freevxfs.sh
 ./freevxfs.sh
 chmod +x hfs.sh
 ./hfs.sh
+chmod +x hfsplus.sh
+./hfsplus.sh
