@@ -76,4 +76,5 @@ chmod +x appropriate_log_file_access.sh
 ./appropriate_log_file_access.sh
 chmod +x config_auditing.sh
 ./config_auditing.sh
-
+chmod +x config_data_retention.sh
+./config_data_retention.sh
