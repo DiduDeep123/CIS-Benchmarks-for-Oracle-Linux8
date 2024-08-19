@@ -60,7 +60,7 @@ log_message "Checking if GDM login banner is configured..."
  if [ -z "$l_output2" ]; then
  echo -e "\n- Audit Result:\n ** PASS **\n$l_output\n"
  echo "GDM LOGIN BANNER:CONFIGURED" >> $RESULT_FILE
- log_message "GDM login banner is configured."
+ log_message "GDM login banner is configured or GDM is not installed."
  else
  echo -e "\n- Audit Result:\n ** FAIL **\n - Reason(s) for audit failure:\n$l_output2\n"
  [ -n "$l_output" ] && echo -e "\n- Correctly set:\n$l_output\n"
