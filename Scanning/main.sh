@@ -90,4 +90,10 @@ chmod +x no_unowned_ungrouped_files_exist.sh
 ./no_unowned_ungrouped_files_exist.sh
 chmod +x local_user_group_settings.sh
 ./local_user_group_settings.sh
+chmod +x local_interactive_user_directories.sh
+./local_interactive_user_directories.sh
+chmod +x root_path_integrity.sh
+./root_path_integrity.sh
+
+
 
