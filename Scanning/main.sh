@@ -68,4 +68,6 @@ chmod +x config_PMA.sh
 ./config_PMA.sh
 chmod +x config_PAM_authselect.sh
 ./config_PAM_authselect.sh
+chmod +x config_rsyslog.sh
+./config_rsyslog.sh
 
