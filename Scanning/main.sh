@@ -88,5 +88,6 @@ chmod +x world_writable_files_dir_are_secured.sh
 ./world_writable_files_dir_are_secured.sh
 chmod +x no_unowned_ungrouped_files_exist.sh
 ./no_unowned_ungrouped_files_exist.sh
-
+chmod +x local_user_group_settings.sh
+./local_user_group_settings.sh
 
