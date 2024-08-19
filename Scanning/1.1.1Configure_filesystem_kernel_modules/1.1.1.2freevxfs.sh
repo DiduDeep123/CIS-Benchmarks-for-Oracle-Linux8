@@ -63,12 +63,12 @@ log_message() {
  if [ -z "$l_output2" ]; then
  echo -e "\n- Audit Result:\n ** PASS **\n$l_output\n"
  echo "FREEVXFS CHECK: SUCCESS" >> $RESULT_FILE
- log_message "freevxfs kernel module is not available."
+ log_message "freevxfs kernel module scan: PASS."
  else
  echo -e "\n- Audit Result:\n ** FAIL **\n - Reason(s) for audit failure:\n$l_output2\n"
  [ -n "$l_output" ] && echo -e "\n- Correctly set:\n$l_output\n"
  echo "FREEVXFS CHECK: FAILED" >> $RESULT_FILE
- log_message "freevxfs kernel module not available."
+ log_message "freevxfs kernel module scan: FAILED."
  fi
 
 
