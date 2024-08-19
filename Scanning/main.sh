@@ -65,7 +65,7 @@ chmod +x permissions_on_bootloader_config.sh
 chmod +x single_firewall_config_utility.sh
 ./single_firewall_config_utility.sh
 chmod +x config_PMA.sh
-./config_PAM_authselect
+./config_PMA.sh
 chmod +x config_PAM_authselect.sh
-./config_PAM_authselect
+./config_PAM_authselect.sh
 
