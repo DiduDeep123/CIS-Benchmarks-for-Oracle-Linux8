@@ -71,7 +71,7 @@ log_message() {
  echo -e "\n- Audit Result:\n ** FAIL **\n - Reason(s) for audit failure:\n$l_output2\n"
  [ -n "$l_output" ] && echo -e "\n- Correctly set:\n$l_output\n"
  echo "TIPC CHECK: FAILED" >> $RESULT_FILE
- log_message "tipc kernel module not available."
+ log_message "tipc kernel module is available."
 
  fi
 
