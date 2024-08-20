@@ -7,7 +7,10 @@ chmod +x enable_reverse_path_filtering.sh enable_tcp_syn_cookies.sh ensure_ip_fo
 ignore_broadcast_icmp_req.sh log_suspicious_packets.sh reject_icmp_redirects.sh reject_ipv6_router_advertisements.sh \
 reject_source_routed_packets.sh fix_journald.sh
 
-chmod +x 
+chmod +x disable_core_dump_backtraces.sh disable_core_dump_storage.sh enable_ASLR.sh restrict_ptrace_scope.sh \
+etc_ssh_sshd_config_permissions.sh fix_config_audit.sh fix_config_integrity_ckeck.sh etc_ssh_sshd_config_permissions.sh \
+
+
 
 
 
@@ -35,5 +38,13 @@ chmod +x
 ./reject_ipv6_router_advertisements.sh
 ./reject_source_routed_packets.sh
 ./fix_journald.sh
+./disable_core_dump_backtraces.sh 
+./disable_core_dump_storage.sh 
+./enable_ASLR.sh restrict_ptrace_scope.sh
+./etc_ssh_sshd_config_permissions.sh
+./fix_config_audit.sh 
+./fix_config_integrity_ckeck.sh 
+./etc_ssh_sshd_config_permissions.sh
+
 
 
