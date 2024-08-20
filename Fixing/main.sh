@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-./permissions.sh
+
 ./fixing_script_1.sh
 ./fix_cramfs.sh
 ./fix_freevxfs.sh
