@@ -243,7 +243,7 @@ fi
 }
 
 #fix print server services
-fix_print_server_services() {
+fix_print_server_services_cups() {
 if grep -q "cups(SPECIAL PURPOSE SERVICE):INSTALLED" $RESULT_FILE; then
 	read -p "Is cups required as a dependency? (y/n)" answer
 	if [[ answer = [Yy] ]]; then
@@ -265,7 +265,7 @@ fi
 
 
 #fix rpcbind services
-fix_print_server_services() {
+fix_print_server_services_rpcbind() {
 if grep -q "rpcbind(SPECIAL PURPOSE SERVICE):INSTALLED" $RESULT_FILE; then
 	read -p "Is rpcbind required as a dependency? (y/n)" answer
 	if [[ answer = [Yy] ]]; then
@@ -505,4 +505,34 @@ if grep -q ""BLUEZ:INSTALLED"" $RESULT_FILE; then
 fi
 
 }
+
+
+fix_chrony
+fix_chrony_run_as_root_user
+fix_bind
+fix_autofs
+fix_avahi
+fix_dhcp_services
+fix_dnsmasq
+fix_samba
+fix_ftp_server_services
+fix_message_access_server_services
+fix_nfs_utills
+fix_nis_services
+fix_print_server_services_cups
+fix_print_server_services_rpcbind`
+fix_rsync_services
+fix_snmp_services
+fix_telnet_services
+fix_tftp_services
+fix_squid
+fix_nginx
+fix_xinetd
+fix_xorg_x11_server_common
+fix_ftp
+fix_ldap
+fix_nis
+fix_telnet
+fix_tftp
+fix_bluez
 
