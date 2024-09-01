@@ -61,7 +61,10 @@ update_bios_grub() {
     done
 }
 
-
+if grep -q "PERMISSIONS ON BOOTLOADER CONFIG:NOT CONFIGURED" $RESULT_FILE; then
+	read -p "Do you want to edit permissions on bootloader config? (y/n)" answer
+	if [[ answer = [Yy] ]]; then
+	
 # Check if UEFI system
 if [ -d /sys/firmware/efi ]; then
   
@@ -79,5 +82,8 @@ else
         echo "User opted not to update BIOS bootloader configuration."
     fi
 fi
+else
+	select_no""
+
 
 
