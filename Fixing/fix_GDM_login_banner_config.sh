@@ -16,6 +16,9 @@ select_no() {
 	echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $NEW_LOG_FILE
 }
 
+if grep -q "GDM LOGIN BANNER:NOT CONFIGURED" $RESULT_FILE; then
+	read -p "Do you want to configure GDM login banner? (y/n)" answer
+	if [[ answer = [Yy] ]]; then
  l_pkgoutput=""
  if command -v dpkg-query > /dev/null 2>&1; then
  l_pq="dpkg-query -W"
@@ -56,6 +59,10 @@ select_no() {
  dconf update
  echo "GDM banner message is enabled and set"
  else
+ select_no "GDM banner message:REQUIRES CHANGE"
+ fi
+ else
  echo -e "\n\n - GNOME Desktop Manager isn't installed\n - Recommendation is Not Applicable\n - No remediation required\n"
+ fi
  fi
 
