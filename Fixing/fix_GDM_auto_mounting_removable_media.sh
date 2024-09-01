@@ -1,5 +1,25 @@
 #!/usr/bin/bash
 
+
+LOG_FILE="/var/log/hardening_fix.log"
+RESULT_FILE="/var/tmp/scan_results.txt"
+NEW_LOG_FILE="/var/log/user_select.log"
+
+# Logging function
+log_message() {
+    echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $LOG_FILE
+}
+
+#User opted not to apply remediation function
+select_no() {
+	log_message "User opted not to apply remediation."
+	echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $NEW_LOG_FILE
+}
+
+if grep -q "AUTOMATIC MOUNTING OF REMOVABLE MEDIA:NOT DISABLED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
+	read -p "Do you want to disable GDM automatic mounting of removable media? (y/n)" answer
+	if [[ answer = [Yy] ]]; then
+
  l_pkgoutput=""
  l_gpname="local" # Set to desired dconf profile name (default is local)
  # Check if GNOME Desktop Manager is installed. If package isn't installed, recommendation is Not Applicable\n
@@ -79,7 +99,10 @@
  # update dconf database
  dconf update
  else
- echo -e "\n - GNOME Desktop Manager package is not installed on the 
-system\n - Recommendation is not applicable"
+ echo -e "\n - GNOME Desktop Manager package is not installed on the system\n - Recommendation is not applicable"
  fi
-
+else
+ select_no "GDM disable automatic mounting of removable media:REQUIRES CHANGE"
+ fi
+ fi
+ 
