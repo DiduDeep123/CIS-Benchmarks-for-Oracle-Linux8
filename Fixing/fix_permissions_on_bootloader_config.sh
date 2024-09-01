@@ -28,14 +28,15 @@ update_uefi_fstab() {
         exit 1
     fi
     
+    read -p "Enter the device identifier for the EFI partition (e.g., /dev/sda1): " device
+
     # Check if the entry already exists
-    grep -q '/boot/efi' /etc/fstab
-    if [ $? -ne 0 ]; then
-        echo "Adding UEFI /boot/efi entry to /etc/fstab..."
-        echo "<device> /boot/efi vfat defaults,umask=0027,fmask=0077,uid=0,gid=0 0 0" >> /etc/fstab
-        echo "Please reboot the system for the changes to take effect."
-    else
+    if grep -q '/boot/efi' /etc/fstab; then
         echo "/boot/efi entry already exists in /etc/fstab."
+    else
+        echo "Adding UEFI /boot/efi entry to /etc/fstab..."
+        echo "$device /boot/efi vfat defaults,umask=0027,fmask=0077,uid=0,gid=0 0 0" >> /etc/fstab
+        echo "Please reboot the system for the changes to take effect."
     fi
 }
 
@@ -83,7 +84,9 @@ else
     fi
 fi
 else
-	select_no"PERMISSIONS ON BOOTLOADER CONFIG: REQUIRES CHANGE" >>
+	select_no "PERMISSIONS ON BOOTLOADER CONFIG: REQUIRES CHANGE"
+ fi
+ fi
 
 
 
