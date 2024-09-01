@@ -15,8 +15,8 @@ select_no() {
 	echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $NEW_LOG_FILE
 }
 
-grep -q "GDM LOGIN BANNER:NOT CONFIGURED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
-	read -p "Do you want to configure GDM login banner? (y/n)" answer
+grep -q "GDM DISABLE USER LIST: NOT ENABLED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
+	read -p "Do you want to enable GDM disable user list option? (y/n)" answer
 	if [[ answer = [Yy] ]]; then
 
  l_gdmprofile="gdm"
@@ -38,4 +38,5 @@ grep -q "GDM LOGIN BANNER:NOT CONFIGURED" "$RESULT_FILE" && grep -q "GDM:INSTALL
  fi
  fi
  dconf update
+ else
 
