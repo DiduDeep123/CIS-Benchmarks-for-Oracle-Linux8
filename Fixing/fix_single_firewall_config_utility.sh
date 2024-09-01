@@ -75,6 +75,8 @@ installing NFTables"
  echo -e "\n - Unable to determine firewall state" ;;
  esac
  else
- 
+ select_no "single firewall configuration utility: REQUIRES CHANGE"
+  fi
+  fi
 
 
