@@ -54,11 +54,11 @@ log_message "Checking GDM disabling automatic mounting of removable media is not
  # Report results. If no failures output in l_output2, we pass
  if [ -z "$l_output2" ]; then
  echo -e "\n- Audit Result:\n ** PASS **\n$l_output\n"
- echo "DISABLE AUTOMATIC MOUNTING:LOCKED" >> $RESULT_FILE
- log_message "Disable automatic mounting is locked."
+ echo "GDM DISABLE AUTOMATIC MOUNTING:LOCKED" >> $RESULT_FILE
+ log_message "GDM Disable automatic mounting is locked."
  else
  echo -e "\n- Audit Result:\n ** FAIL **\n - Reason(s) for audit failure:\n$l_output2\n"
  [ -n "$l_output" ] && echo -e "\n- Correctly set:\n$l_output\n"
- echo "DISABLE AUTOMATIC MOUNTING:NOT LOCKED" >> $RESULT_FILE
- log_message "Disable automatic mounting is not locked."
+ echo "GDM DISABLE AUTOMATIC MOUNTING:NOT LOCKED" >> $RESULT_FILE
+ log_message "GDM Disable automatic mounting is not locked."
  fi
