@@ -1,5 +1,16 @@
 #!/usr/bin/bash
 
+LOG_FILE="/var/log/hardening_scan.log"
+RESULT_FILE="/var/tmp/scan_results.txt"
+
+# Logging function
+log_message() {
+    echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $LOG_FILE	  #output to both screen and log file
+}
+
+log_message "Checking if GDM disable user list option is enabled..."
+
+
  l_pkgoutput=""
  if command -v dpkg-query > /dev/null 2>&1; then
  l_pq="dpkg-query -W"
