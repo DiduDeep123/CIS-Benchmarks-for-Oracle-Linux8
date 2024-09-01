@@ -16,7 +16,7 @@ select_no() {
 	echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $NEW_LOG_FILE
 }
 
-grep -q "GDM LOGIN BANNER:NOT CONFIGURED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
+if grep -q "GDM LOGIN BANNER:NOT CONFIGURED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
 	read -p "Do you want to configure GDM login banner? (y/n)" answer
 	if [[ answer = [Yy] ]]; then
  l_pkgoutput=""
