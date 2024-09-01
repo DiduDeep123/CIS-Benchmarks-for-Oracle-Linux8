@@ -1,5 +1,24 @@
 #!/usr/bin/bash
 
+
+LOG_FILE="/var/log/hardening_fix.log"
+RESULT_FILE="/var/tmp/scan_results.txt"
+NEW_LOG_FILE="/var/log/user_select.log"
+
+# Logging function
+log_message() {
+    echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $LOG_FILE
+}
+
+#User opted not to apply remediation function
+select_no() {
+	log_message "User opted not to apply remediation."
+	echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $NEW_LOG_FILE
+}
+
+if grep -q "single firewall configuration utility: NOT IN USE" "$RESULT_FILE"; then
+	read -p "Do you want to ensure single firewall configuration utility is in use? (y/n)" answer
+	if [[ answer = [Yy] ]]; then
  l_output="" l_output2="" l_fwd_status="" l_nft_status="" l_fwutil_status=""
  # Determine FirewallD utility Status
  rpm -q firewalld > /dev/null 2>&1 && l_fwd_status="$(systemctl is-enabled 
@@ -55,5 +74,7 @@ installing NFTables"
  *) 
  echo -e "\n - Unable to determine firewall state" ;;
  esac
+ else
+ 
 
-single firewall configuration utility: NOT IN USE
+
