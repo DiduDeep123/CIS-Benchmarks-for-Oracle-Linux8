@@ -31,11 +31,17 @@
  fi
  if [ -z "$output2" ]; then
  echo -e "$l_pkgoutput\n- Audit result:\n *** PASS: ***\n$output\n"
+ echo "GDM DISABLE USER LIST: ENABLED" >> $RESULT_FILE
+ log_message "GDM disable user list option is enabled."
  else
  echo -e "$l_pkgoutput\n- Audit Result:\n *** FAIL: ***\n$output2\n"
+ echo "GDM DISABLE USER LIST: NOT ENABLED" >> $RESULT_FILE
+ log_message "GDM disable user list option is not enabled."
  [ -n "$output" ] && echo -e "$output\n"
  fi
  else
  echo -e "\n\n - GNOME Desktop Manager isn't installed\n - Recommendation is Not Applicable\n- Audit result:\n *** PASS ***\n"
+ echo "GDM: NOT INSTALLED" >> $RESULT_FILE
+ 
  fi
 
