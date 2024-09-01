@@ -83,7 +83,7 @@ else
     fi
 fi
 else
-	select_no""
+	select_no"PERMISSIONS ON BOOTLOADER CONFIG: REQUIRES CHANGE" >>
 
 
 
