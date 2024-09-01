@@ -15,7 +15,7 @@ select_no() {
 	echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $NEW_LOG_FILE
 }
 
-grep -q "GDM DISABLE USER LIST: NOT ENABLED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
+if grep -q "GDM DISABLE USER LIST: NOT ENABLED" "$RESULT_FILE" && grep -q "GDM:INSTALLED" "$RESULT_FILE"; then
 	read -p "Do you want to enable GDM disable user list option? (y/n)" answer
 	if [[ answer = [Yy] ]]; then
 
@@ -38,5 +38,10 @@ grep -q "GDM DISABLE USER LIST: NOT ENABLED" "$RESULT_FILE" && grep -q "GDM:INST
  fi
  fi
  dconf update
+ echo "GDM banner message is enabled and set"
  else
+ select_no "GDM banner message:REQUIRES CHANGE"
+ fi
+ echo -e "\n\n - GNOME Desktop Manager isn't installed\n - Recommendation is Not Applicable\n - No remediation required\n"
+ fi
 
