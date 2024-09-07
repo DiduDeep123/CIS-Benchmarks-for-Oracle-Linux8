@@ -21,11 +21,9 @@ if [[ $answer = [Yy] ]]; then
  l_mndir="$(tr '-' '/' <<< "$l_mname")"
  module_loadable_fix()
  {
- # If the module is currently loadable, add "install {MODULE_NAME} /bin/false" to a file in 
-"/etc/modprobe.d"
+ # If the module is currently loadable, add "install {MODULE_NAME} /bin/false" to a file in "/etc/modprobe.d"
  l_loadable="$(modprobe -n -v "$l_mname")"
- [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P --
-"(^\h*install|\b$l_mname)\b" <<< "$l_loadable")"
+ [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P --"(^\h*install|\b$l_mname)\b" <<< "$l_loadable")"
  if ! grep -Pq -- '^\h*install \/bin\/(true|false)' <<< "$l_loadable"; then
  echo -e "\n - setting module: \"$l_mname\" to be not loadable"
  echo -e "install $l_mname /bin/false" >> /etc/modprobe.d/"$l_mpname".conf
