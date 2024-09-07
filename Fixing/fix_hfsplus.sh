@@ -14,7 +14,7 @@ log_message() {
 if grep -q "HFSPLUS CHECK: FAILED" $RESULT_FILE; then
 
 read -p "Do you want to remove hfsplus module? (y/n)" answer
-if [[ answer = [Yy] ]]; then
+if [[ $answer = [Yy] ]]; then
 log_message "Starting remediation of hfsplus module..."
 
  l_mname="hfsplus" # set module name
