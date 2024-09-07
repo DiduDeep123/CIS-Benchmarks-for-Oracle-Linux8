@@ -13,7 +13,7 @@ log_message() {
 if grep -q "HFS CHECK: FAILED" $RESULT_FILE; then
 
 read -p "Do you want to remove hfs module? (y/n)" answer
-if [[ answer = [Yy] ]]; then
+if [[ $answer = [Yy] ]]; then
 log_message "Starting remediation of hfs module..."
  l_mname="hfs" # set module name
  l_mtype="fs" # set module type
