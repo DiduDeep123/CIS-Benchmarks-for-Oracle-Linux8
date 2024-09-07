@@ -16,17 +16,18 @@ read -p "Do you want to remove cramfs module? (y/n)" answer
 if [[ $answer = [Yy] ]]; then
 log_message "Starting remediation of cramfs module..."
  
- l_mname="cramf
- {s" # set module name
+ l_mname="cramfs" # set module name
  l_mtype="fs" # set module type
  l_mpath="/lib/modules/**/kernel/$l_mtype"
  l_mpname="$(tr '-' '_' <<< "$l_mname")"
  l_mndir="$(tr '-' '/' <<< "$l_mname")"
  module_loadable_fix()
  {
- # If the module is currently loadable, add "install {MODULE_NAME} /bin/false" to a file in "/etc/modprobe.d"
+ # If the module is currently loadable, add "install {MODULE_NAME} /bin/false" to a file in 
+"/etc/modprobe.d"
  l_loadable="$(modprobe -n -v "$l_mname")"
- [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P --"(^\h*install|\b$l_mname)\b" <<< "$l_loadable")"
+ [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P --
+"(^\h*install|\b$l_mname)\b" <<< "$l_loadable")"
  if ! grep -Pq -- '^\h*install \/bin\/(true|false)' <<< "$l_loadable"; then
  echo -e "\n - setting module: \"$l_mname\" to be not loadable"
  echo -e "install $l_mname /bin/false" >> /etc/modprobe.d/"$l_mpname".conf
@@ -62,8 +63,6 @@ log_message "Starting remediation of cramfs module..."
  fi
  done
  echo -e "\n - remediation of module: \"$l_mname\" complete\n"
- log_message "Remediation of cramfs module complete."
- fi
- fi
- 
+fi
+fi
 
