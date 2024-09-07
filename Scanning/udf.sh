@@ -8,7 +8,7 @@ log_message() {
     echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a $LOG_FILE	  #output to both screen and log file
 }
 
-log_message "Checking if udf module is not available..."
+log_message "Checking if udf kernel module is not available..."
 
  l_output="" l_output2="" l_output3="" l_dl="" # Unset output variables
  l_mname="udf" # set module name
