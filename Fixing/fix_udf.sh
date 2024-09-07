@@ -13,7 +13,7 @@ log_message() {
 if grep -q "UDF CHECK: FAILED" $RESULT_FILE; then
 
 read -p "Do you want to remove udf module? (y/n)" answer
-if [[ answer = [Yy] ]]; then
+if [[ $answer = [Yy] ]]; then
  l_mname="udf" # set module name
  l_mtype="fs" # set module type
  l_mpath="/lib/modules/**/kernel/$l_mtype"
