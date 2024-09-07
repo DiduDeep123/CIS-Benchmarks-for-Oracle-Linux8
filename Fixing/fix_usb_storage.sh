@@ -12,7 +12,7 @@ log_message() {
 if grep -q "USB-STORAGE CHECK: FAILED" $RESULT_FILE; then
 
 read -p "Do you want to remove usb-storage module? (y/n)" answer
-if [[ answer = [Yy] ]]; then
+if [[ $answer = [Yy] ]]; then
  l_mname="usb-storage" # set module name
  l_mtype="drivers" # set module type
  l_mpath="/lib/modules/**/kernel/$l_mtype"
