@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Configure Cron
+
 LOG_FILE="/var/log/hardening_fix.log"
 RESULT_FILE="/var/tmp/scan_results.txt"
 
