@@ -168,42 +168,38 @@ check_file() {
     local expected_mode=$2
 
     if [ -e "$file_path" ]; then
-        echo "Checking $file_path..."
 
-        # Get file properties
         file_stat=$(stat -Lc 'Access: (%a/%A) Owner: (%U) Group: (%G)' "$file_path")
         echo "$file_stat"
 
-        # Extract mode, owner, and group from stat output
         local mode=$(echo "$file_stat" | awk -F' ' '{print $2}' | cut -d'/' -f1)
         local owner=$(echo "$file_stat" | awk -F' ' '{print $4}')
         local group=$(echo "$file_stat" | awk -F' ' '{print $6}')
 
         # Check if mode is 0640 or more restrictive
         if [ "$mode" -le "$expected_mode" ] && [ "$owner" = "root" ] && [ "$group" = "root" ]; then
-            echo "$file_path is configured correctly."
+            log_message "$file_path is configured correctly."
 	    echo "$file_path:correctly configured" >> $RESULT_FILE
         else
-            echo "$file_path does not meet the required configuration."
+            log_message "$file_path does not meet the required configuration."
 	    echo "$file_path:incorrectly configured" >> $RESULT_FILE
-            echo "Expected mode: 0640 or more restrictive, Owner: root, Group: root."
         fi
     else
-        echo "$file_path does not exist."
+        log_message "$file_path does not exist."
 	echo "$file_path:DOES NOT EXIST" >> $RESULT_FILE
     fi
 }
 
 # Function to check cron configuration
 check_cron_configuration() {
-    echo "Checking /etc/cron.allow:"
+    log_message "Checking /etc/cron.allow:"
     check_file "/etc/cron.allow" 640
 
-    echo "Checking /etc/cron.deny:"
+    log_message "Checking /etc/cron.deny:"
     if [ -e "/etc/cron.deny" ]; then
         check_file "/etc/cron.deny" 640
     else
-        echo "/etc/cron.deny does not exist, which is acceptable."
+        echo "/etc/cron.deny:DOES NOT EXIST" >> $RESULT_FILE
     fi
 }
 
