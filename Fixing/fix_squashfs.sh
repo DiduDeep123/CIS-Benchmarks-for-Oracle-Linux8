@@ -13,7 +13,7 @@ log_message() {
 if grep -q "SQUASHFS CHECK:FAILED" $RESULT_FILE; then
 
 read -p "Do you want to remove squashfs module? (y/n)" answer
-if [[ answer = [Yy] ]]; then
+if [[ $answer = [Yy] ]]; then
  l_mname="squashfs" # set module name
  l_mtype="fs" # set module type
  l_mpath="/lib/modules/**/kernel/$l_mtype"
