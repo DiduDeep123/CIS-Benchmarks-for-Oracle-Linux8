@@ -169,8 +169,8 @@ check_file() {
 
     if [ -e "$file_path" ]; then
 
-        file_stat=$(stat -Lc 'Access: (%a/%A) Owner: (%U) Group: (%G)' "$file_path")
-        echo "$file_stat"
+        file_stat=$(stat -Lc 'Access: %a/%A Owner: %U Group: %G' "$file_path")
+      
 
         local mode=$(echo "$file_stat" | awk -F' ' '{print $2}' | cut -d'/' -f1)
         local owner=$(echo "$file_stat" | awk -F' ' '{print $4}')
