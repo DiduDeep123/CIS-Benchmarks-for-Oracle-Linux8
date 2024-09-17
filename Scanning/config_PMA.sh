@@ -164,6 +164,36 @@ check_pam_faillock_root_unlock_time() {
     fi
 }
 
+verify_difok_setting() {
+  # Define the files to check
+  local files_to_check="/etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf"
+  
+  grep_output=$(grep -Psi -- '^\h*difok\h*=\h*([2-9]|[1-9][0-9]+)\b' $files_to_check)
+
+  if [[ -n "$grep_output" ]]; then
+    log_message "Difok setting is compliant in the following files: "$grep_output""
+    echo "DIFOK:CONFIGURED" >> "$RESULT_FILE"
+  else
+    log_message "Difok setting is non-compliant. Please set difok to 2 or more in the necessary files."
+    echo "DIFOK:NOT CONFIGURED" >> "$RESULT_FILE"
+  fi
+}
+
+verify_difok_pam() {
+  local pam_files="/etc/pam.d/system-auth /etc/pam.d/password-auth"
+  
+  non_compliant=$(grep -Psi -- '^\h*password\h+(requisite|required|sufficient)\h+pam_pwquality\.so\h+([^#\n\r]+\h+)?difok\h*=\h*([0-1])\b' $pam_files)
+  
+  if [[ -n "$non_compliant" ]]; then
+    log_message "Non-compliant files where difok is set to 0 or 1:"$non_compliant""
+     echo "DIFOK_PAM:CONFIGURED" >> "$RESULT_FILE"
+  else
+    log_message "All files are compliant with difok being 2 or more."
+     echo "DIFOK_PAM:NOT CONFIGURED" >> "$RESULT_FILE"
+  fi
+}
+
+
 # Function to check minlen setting in pwquality configuration
 check_minlen_setting() {
     
@@ -180,6 +210,36 @@ check_minlen_setting() {
         echo "PWQUALITY MINLEN SETTING:INCORRECT" >> "$RESULT_FILE"
     fi
 }
+
+check_minlen_compliance() {
+ 
+    PAM_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+
+    # Define the regex pattern to search for non-compliant minlen values
+    NON_COMPLIANT_REGEX='^\h*password\h+(requisite|required|sufficient)\h+pam_pwquality\.so\h+([^#\n\r]+\h+)?minlen\h*=\h*([0-9]|1[0-3])\b'
+    
+    non_compliant_found=false
+
+    log_message "Checking for non-compliant minlen in PAM files..."
+
+
+    for file in "${PAM_FILES[@]}"; do
+        
+        if grep -Psi -- "$NON_COMPLIANT_REGEX" "$file" > /dev/null; then
+            log_message "Non-compliant minlen found in: $file"
+            non_compliant_found=true
+            echo "PAM MINLEN SETTING:INCORRECT" >> "$RESULT_FILE"
+        fi
+    done
+
+    if [ "$non_compliant_found" = false ]; then
+       log_message "All PAM files are compliant with minlen settings."
+        echo "PAM MINLEN SETTING:CORRECT" >> "$RESULT_FILE"
+    fi
+}
+
+
+
 
 # Function to check pwquality settings in PAM configuration
 check_pwquality_settings() {
@@ -215,6 +275,32 @@ check_maxrepeat_setting() {
     fi
 }
 
+
+check_maxrepeat_pam() {
+    local pam_files=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+    local non_compliant_files=()
+
+    for pam_file in "${pam_files[@]}"; do
+        if grep -Pi -- '^\s*password\s+(requisite|required|sufficient)\s+pam_pwquality\.so\h+([^#\n\r]+\h+)?maxrepeat\h*=\h*(0|[4-9]|[1-9][0-9]+)\b' "$pam_file" > /dev/null; then
+            non_compliant_files+=("$pam_file")
+        fi
+    done
+
+    if [ ${#non_compliant_files[@]} -ne 0 ]; then
+        log_message "Non-compliant files:"
+        for file in "${non_compliant_files[@]}"; do
+            echo "$file"
+        done
+        echo "PAM MAXREPEAT SETTING:INCORRECT" >> "$RESULT_FILE"
+    else
+       log_message "All PAM files are compliant."
+       PAM MAXREPEAT SETTING:CORRECT" >> "$RESULT_FILE"
+    fi
+}
+
+
+
+
 # Function to check maxsequence setting in pwquality configuration
 check_maxsequence_setting() {
    
@@ -231,6 +317,39 @@ check_maxsequence_setting() {
         echo "PWQUALITY MAXSEQUENCE SETTING:INCORRECT" >> "$RESULT_FILE"
     fi
 }
+
+
+# Function to verify the maxsequence argument in PAM files
+verify_maxsequence() {
+    local non_compliant_files=()
+    log_message "Checking maxsequence argument in PAM files..."
+    for l_pam_file in /etc/pam.d/system-auth /etc/pam.d/password-auth; do
+        # Check if the file exists
+        if [[ -f "$l_pam_file" ]]; then
+           
+            if grep -Pq '^password\s+(requisite|required|sufficient)\s+pam_pwquality\.so\s+.*\s+maxsequence\s*=\s*(0|[4-9]|[1-9][0-9]+)\b' "$l_pam_file"; then
+                non_compliant_files+=("$l_pam_file")
+            fi
+        else
+            echo "File $l_pam_file does not exist, skipping."
+        fi
+    done
+    
+    if [[ ${#non_compliant_files[@]} -gt 0 ]]; then
+        log_message "Non-compliant files found:"
+        for file in "${non_compliant_files[@]}"; do
+            echo "$file"
+        done
+        PAM MAXSEQUENCE SETTING:INCORRECT" >> "$RESULT_FILE"
+    else
+        log_message "All files are compliant."
+        PAM MAXSEQUENCE SETTING:CORRECT" >> "$RESULT_FILE"
+    fi
+}
+
+
+
+
 
 # Function to check dictcheck option in pwquality configuration and PAM files
 check_dictcheck_setting() {
@@ -251,6 +370,44 @@ check_dictcheck_setting() {
         echo "DICTCHECK SETTING:INCORRECT" >> "$RESULT_FILE"
     fi
 }
+
+
+
+# Function to check for dictcheck option set to 0 in PAM files
+check_dictcheck_disabled() {
+    log_message "Checking for dictcheck option set to 0 (disabled) in PAM files..."
+
+    pam_files=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+    
+    compliant=true
+
+    for pam_file in "${pam_files[@]}"; do
+        if [[ -f "$pam_file" ]]; then
+           
+            if grep -Pi -- '^\h*password\h+(requisite|required|sufficient)\h+pam_pwquality\.so\h+([^#\n\r]+\h+)?dictcheck\h*=\h*0\b' "$pam_file"; then
+                echo "Non-compliance found in $pam_file: dictcheck option set to 0 (disabled)."
+                compliant=false
+            else
+                echo "Compliance verified in $pam_file."
+            fi
+        else
+            echo "File $pam_file does not exist, skipping..."
+        fi
+    done
+
+    # Report overall compliance
+    if $compliant; then
+        log_message "All PAM files are compliant: dictcheck option is not set to 0."
+        echo "PAM DICTCHECK SETTING:CORRECT" >> "$RESULT_FILE"
+    else
+        log_message "Non-compliance detected in one or more PAM files."
+        echo "PAM DICTCHECK SETTING:INCORRECT" >> "$RESULT_FILE"
+    fi
+}
+
+
+
+
 
 # Function to check enforce_for_root setting in pwquality configuration files
 check_enforce_for_root_pwquality() {
@@ -341,11 +498,17 @@ verify_PAM_unlock_time
 check_faillock_settings
 verify_root_unlock_time
 check_pam_faillock_root_unlock_time
+verify_difok_setting
+verify_difok_pam
 check_minlen_setting
+check_minlen_compliance
 check_pwquality_settings
 check_maxrepeat_setting
+check_maxrepeat_pam
 check_maxsequence_setting
+verify_maxsequence
 check_dictcheck_setting
+check_dictcheck_disabled
 check_enforce_for_root_pwquality
 check_remember_option
 check_enforce_for_root_pwhistory
