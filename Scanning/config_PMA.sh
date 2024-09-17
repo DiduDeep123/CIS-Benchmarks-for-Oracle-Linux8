@@ -25,6 +25,42 @@ check_faillock_deny() {
     fi
 }
 
+
+# Function to check if the 'deny' argument in PAM configuration files is not set, or is set to 5 or less
+check_pam_deny_argument() {
+    local files=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+    local pattern='^\h*auth\h+(requisite|required|sufficient)\h+pam_faillock\.so\h+([^#\n\r]+\h+)?deny\h*=\h*(0|[6-9]|[1-9][0-9]+)\b'
+
+    # Array to track non-compliant files
+    local non_compliant_files=()
+
+    # Check each PAM configuration file
+    for file in "${files[@]}"; do
+        if [ -f "$file" ]; then
+
+            if grep -Pi -- "$pattern" "$file" > /dev/null 2>&1; then
+                non_compliant_files+=("$file")
+            fi
+        
+        fi
+    done
+
+
+    if [ ${#non_compliant_files[@]} -gt 0 ]; then
+         log_message "The following files have non-compliant 'deny' configurations:"
+        for file in "${non_compliant_files[@]}"; do
+            echo "$file"
+        done
+        echo "PAM DENY ARGUMENT:INCORRECT" >> "$RESULT_FILE"
+    else
+        log_message "No 'deny' argument set to 5 or less was found. Configuration is compliant."
+        echo "PAM DENY ARGUMENT:CORRECT" >> "$RESULT_FILE"
+    fi
+}
+
+
+
+
 # Function to check unlock_time parameter in faillock configuration
 check_faillock_unlock_time() {
 
@@ -41,6 +77,42 @@ check_faillock_unlock_time() {
         echo "FAILLOCK UNLOCK TIME:INCORRECT" >> "$RESULT_FILE"
     fi
 }
+
+
+# Function to verify the unlock_time argument in PAM files
+verify_PAM_unlock_time() {
+    # List of PAM configuration files to check
+    local pam_files=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+
+    # Array to store non-compliant files
+    local non_compliant_files=()
+
+    
+    for pam_file in "${pam_files[@]}"; do
+        # Check if the unlock_time argument is set and non-compliant
+        local result=$(grep -Pi -- '^\s*auth\s+(requisite|required|sufficient)\s+pam_faillock\.so\s+([^#\n\r]+\s+)?unlock_time\s*=\s*([1-9]|[1-9][0-9]|[1-8][0-9][0-9])\b' "$pam_file")
+
+        
+        if [ -n "$result" ]; then
+            non_compliant_files+=("$pam_file")
+        fi
+    done
+
+
+    if [ ${#non_compliant_files[@]} -eq 0 ]; then
+        log_message "All PAM configuration files are compliant with the unlock_time policy."
+        echo "PAM UNLOCK TIME:CORRECT" >> "$RESULT_FILE"
+    else
+        log_message "The following PAM configuration files are non-compliant with the unlock_time policy:"
+        for file in "${non_compliant_files[@]}"; do
+            echo "- $file"
+        done
+        echo "PAM UNLOCK TIME:INCORRECT" >> "$RESULT_FILE"
+    fi
+}
+
+
+
 
 # Function to check for even_deny_root and root_unlock_time settings
 check_faillock_settings() {
@@ -263,7 +335,9 @@ check_use_authtok() {
 
 
 check_faillock_deny
+check_pam_deny_argument
 check_faillock_unlock_time
+verify_PAM_unlock_time
 check_faillock_settings
 verify_root_unlock_time
 check_pam_faillock_root_unlock_time
