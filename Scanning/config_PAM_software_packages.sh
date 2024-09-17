@@ -53,10 +53,10 @@ check_authselect_version() {
 
     if [[ "$version" == "authselect-1.2.6" ]] || [[ "$version" == "authselect-1.2.6"* ]]; then
         result="Authselect version is $version, which is acceptable."
-        echo "AUTHSELECT:VERSION OK ($version)" >> "$RESULT_FILE"
+        echo "AUTHSELECT:VERSION OK" >> "$RESULT_FILE"
     else
         result="Authselect version is $version, which does not meet the required criteria."
-        echo "AUTHSELECT:VERSION NOT OK ($version)" >> "$RESULT_FILE"
+        echo "AUTHSELECT:VERSION NEEDS UPGRADE" >> "$RESULT_FILE"
     fi
 
     log_message "$result"
